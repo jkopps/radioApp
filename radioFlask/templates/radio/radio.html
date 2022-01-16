@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Register{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <p>Media to Stream:</p>
+    <div>
+      <input type="radio" id="media:atc" name="media"
+	     value="NPR All Things Considered" checked>
+      <label for="media:atc">NPR All Things Considered</label>
+      
+      <input type="radio" id="media:morning" name="media"
+	     value="NPR Morning Edition">
+      <label for="media:morning">NPR Morning Edition</label>
+    </div>
+
+    <p>Audio Device:</p>
+    <div>
+      <input type="radio" id="speaker:kitchen" name="speaker"
+	     value="Kitchen" checked>
+      <label for="speaker:kitchen">Kitchen (Sonos)</label>
+    </div>
+    
+    <div>
+      <input type="submit" value="Play">
+      </div>
+  </form>
+{% endblock %}
