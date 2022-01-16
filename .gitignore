@@ -1,0 +1,14 @@
+venv/
+
+instance/
+
+dist/
+build/
+*.egg-info
+.pytest_cache/
+.coverage
+htmlcov/
+
+*.pyc
+__pycache__/
+*~
