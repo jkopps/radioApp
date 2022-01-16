@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Now Playing{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <div>
+    <h2>Playing {{ program }}</h2>
+  <ul>
+  {% for segment in segments %}
+    <li>blah </li>
+  {% endfor %}
+  </ul>
+{% endblock %}
