@@ -80,3 +80,6 @@ def isAvailable(program):
 
 def getSegments(program):
     return resourcesMap[program].getSegments()
+
+def getName(program):
+    return resourcesMap[program].name

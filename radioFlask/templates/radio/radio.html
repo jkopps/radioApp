@@ -1,20 +1,18 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}Register{% endblock %}</h1>
+  <h1>{% block title %}Control{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
   <form method="post">
     <p>Media to Stream:</p>
     <div>
-      <input type="radio" id="media:atc" name="media"
-	     value="NPR All Things Considered" checked>
-      <label for="media:atc">NPR All Things Considered</label>
-      
-      <input type="radio" id="media:morning" name="media"
-	     value="NPR Morning Edition">
-      <label for="media:morning">NPR Morning Edition</label>
+      {% for resource in resources %}
+      <input type="radio" id={{ "media:%s" % resource.key }} name="media"
+	     value={{ resource.key }} >
+      <label for=id={{ "media:%s" % resource.key }}>{{resource.name}}</label>
+      {% endfor %}
     </div>
 
     <p>Audio Device:</p>
