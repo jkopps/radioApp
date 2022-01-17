@@ -8,18 +8,23 @@
   <form method="post">
     <p>Media to Stream:</p>
     <div>
-      {% for resource in resources %}
-      <input type="radio" id={{ "media:%s" % resource.key }} name="media"
-	     value={{ resource.key }} >
-      <label for=id={{ "media:%s" % resource.key }}>{{resource.name}}</label>
+      {% for resource in mediaResources %}
+      <input type="radio" name="media" required
+	     id="input:{{ resource.key }}" 
+	     value="{{ resource.key }}" >
+      <label for="input:{{ resource.key }}">{{resource.str()}}</label>
       {% endfor %}
     </div>
 
     <p>Audio Device:</p>
     <div>
-      <input type="radio" id="speaker:kitchen" name="speaker"
-	     value="Kitchen" checked>
-      <label for="speaker:kitchen">Kitchen (Sonos)</label>
+      {% for resource in playbackResources %}
+      <input type="radio" name="speaker" required
+	     id="input:{{ resource.key }}"
+	     value="{{ resource.key }}" >
+      <label for="input:{{ resource.key }}">{{resource.str()}}</label>
+      </label>
+      {% endfor %}
     </div>
     
     <div>

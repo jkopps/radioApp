@@ -18,17 +18,20 @@ def radio():
         ## Validate user input
         if not media.isAvailable(program):
             error = 'Unrecognized media "%s"' % program
+
+        if not playback.isAvailable(speaker):
+            error = 'Unrecognized player "%s"' % speaker
             
         if error is None:
             try:
-                ## @todo Queue audio
                 segments = media.getSegments(program)
+                players = playback.discover()
                 session['program']=media.getName(program)
                 session['speaker'] = speaker
                 g.segments = segments
                 current_app.segments = segments
                 current_app.logger.debug('Retrieved %d segments' % len(segments))
-                playback.queueAudio(segments, True, True)
+                playback.queueAudio(speaker, segments, True, True)
             except Exception as err:
                 raise(err)
             else:
@@ -36,7 +39,9 @@ def radio():
 
         flash(error)
 
-    return render_template('radio/radio.html', resources=media.available())
+    return render_template('radio/radio.html',
+                           mediaResources=media.getAvailable(),
+                           playbackResources=playback.getAvailable())
 
 @bp.route("/playing", methods=('GET',))
 def playing():

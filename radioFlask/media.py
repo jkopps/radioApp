@@ -1,3 +1,5 @@
+from .util import Resource
+
 import json
 from html.parser import HTMLParser
 from urllib.request import urlopen
@@ -10,16 +12,22 @@ class Segment:
     def __str__(self):
         return "%s: %s" % (self.title, self.uri)
 
-class Resource:
-    def __init__(self, name, key):
-        self.name = name
-        self.key = key
+class MediaResource(Resource):
+    def __init__(self, name):
+        Resource.__init__(self, name)
+        
+    def _prefix(self):
+        return u'media'
+
     def getSegments(self):
         raise NotImplementedError()
 
-class NprProgram(Resource):
-    def __init__(self, program, key, url):
-        Resource.__init__(self, program, key)
+class NprProgram(MediaResource):
+    def _kind(self):
+        return 'NPR on-demand program'
+    
+    def __init__(self, program, url):
+        MediaResource.__init__(self, program)
         self.url = url
 
     class NprHTMLParser(HTMLParser):
@@ -61,25 +69,21 @@ class NprProgram(Resource):
         parser.feed(html)
         return parser.segments
 
-resources = (
-    NprProgram('NPR All Things Considered',
-               'npr_atc',
+resources = dict((obj.key, obj) for obj in (
+    NprProgram('All Things Considered',
                'https://www.npr.org/programs/all-things-considered/'),
-    NprProgram('NPR Morning Edition',
-               'npr_morning',
+    NprProgram('Morning Edition',
                'https://www.npr.org/programs/morning-edition/'),
-)
+))
 
-resourcesMap = dict((obj.key, obj) for obj in resources)
-
-def available():
-    return resources
+def getAvailable():
+    return sorted(resources.values(), key=lambda x: x.name)
 
 def isAvailable(program):
-    return program in resourcesMap
+    return program in resources
 
 def getSegments(program):
-    return resourcesMap[program].getSegments()
+    return resources[program].getSegments()
 
 def getName(program):
-    return resourcesMap[program].name
+    return resources[program].name
