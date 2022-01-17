@@ -1,12 +1,12 @@
 import string
-from .util import Resource
+from .util import Provider
 
 import soco
 from soco.data_structures import DidlResource, DidlObject
 
-class Player(Resource):
+class Player(Provider):
     def __init__(self, name):
-        Resource.__init__(self, name)
+        Provider.__init__(self, name)
     def _prefix(self):
         return 'Player'
     def queueAudio(self, audio):

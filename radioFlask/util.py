@@ -1,6 +1,6 @@
 import string
 
-class Resource:
+class Provider:
     @staticmethod
     def remws(s):
         return ''.join(s.split())
@@ -20,3 +20,9 @@ class Resource:
                                  self.remws(name),
                                  self.remws(self._kind()))
 
+
+class Resource:
+    def __init__(self, title, uri, protocol_info):
+        self.title = title
+        self.uri = uri
+        self.protocol_info = protocol_info

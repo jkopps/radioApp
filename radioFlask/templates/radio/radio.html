@@ -8,7 +8,7 @@
   <form method="post">
     <p>Media to Stream:</p>
     <div>
-      {% for resource in mediaResources %}
+      {% for resource in mediaProviders %}
       <input type="radio" name="media" required
 	     id="input:{{ resource.key }}" 
 	     value="{{ resource.key }}" >
@@ -18,7 +18,7 @@
 
     <p>Audio Device:</p>
     <div>
-      {% for resource in playbackResources %}
+      {% for resource in playbackProviders %}
       <input type="radio" name="speaker" required
 	     id="input:{{ resource.key }}"
 	     value="{{ resource.key }}" >

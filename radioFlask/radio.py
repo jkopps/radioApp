@@ -40,8 +40,8 @@ def radio():
         flash(error)
 
     return render_template('radio/radio.html',
-                           mediaResources=media.getAvailable(),
-                           playbackResources=playback.getAvailable())
+                           mediaProviders=media.getAvailable(),
+                           playbackProviders=playback.getAvailable())
 
 @bp.route("/playing", methods=('GET',))
 def playing():

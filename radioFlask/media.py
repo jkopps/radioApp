@@ -1,4 +1,4 @@
-from .util import Resource
+from .util import Provider, Resource
 
 import json
 from html.parser import HTMLParser
@@ -12,9 +12,9 @@ class Segment:
     def __str__(self):
         return "%s: %s" % (self.title, self.uri)
 
-class MediaResource(Resource):
+class MediaProvider(Provider):
     def __init__(self, name):
-        Resource.__init__(self, name)
+        Provider.__init__(self, name)
         
     def _prefix(self):
         return u'media'
@@ -22,13 +22,28 @@ class MediaResource(Resource):
     def getSegments(self):
         raise NotImplementedError()
 
-class NprProgram(MediaResource):
+class LiveStream(MediaProvider):
+    def _kind(self):
+        return 'Radio live stream'
+    def __init__(self, program, uri, protocol_info):
+        MediaProvider.__init__(self, program)
+        self.protocol_info = protocol_info
+        self.uri = uri
+    def getSegments(self):
+        return [Resource(self.name, self.uri, self.protocol_info)]
+
+class NprProgram(MediaProvider):
     def _kind(self):
         return 'NPR on-demand program'
+
+    @classmethod
+    def _protocol_info(self):
+        return 'x-rincon-playlist:*:*:*'
     
-    def __init__(self, program, url):
-        MediaResource.__init__(self, program)
-        self.url = url
+    def __init__(self, program, uri):
+        MediaProvider.__init__(self, program)
+        self.uri = uri
+        self.protocol_info = self._protocol_info()
 
     class NprHTMLParser(HTMLParser):
         def __init__(self):
@@ -54,7 +69,7 @@ class NprProgram(MediaResource):
                 raise KeyError
 
             for s in j['audioData']:
-                self.segments.append(Segment(s['title'], s['audioUrl']))
+                self.segments.append((s['title'],s['audioUrl']))
 
         def handle_endtag(self, tag):
             self.inFullShow = False
@@ -63,17 +78,21 @@ class NprProgram(MediaResource):
             pass
 
     def getSegments(self):
-        page = urlopen(self.url)
+        page = urlopen(self.uri)
         html = page.read().decode("utf-8")
         parser = self.NprHTMLParser()
         parser.feed(html)
-        return parser.segments
+        return [Resource(title, uri, self.protocol_info) 
+                for (title, uri) in parser.segments]
 
 resources = dict((obj.key, obj) for obj in (
     NprProgram('All Things Considered',
                'https://www.npr.org/programs/all-things-considered/'),
     NprProgram('Morning Edition',
                'https://www.npr.org/programs/morning-edition/'),
+    LiveStream('WAMU',
+               'aac://https://hd1.wamu.org/wamu-1.aac',
+               'aac:*:application/octet-stream:*'),
 ))
 
 def getAvailable():
