@@ -11,7 +11,11 @@
       {% for resource in mediaProviders %}
       <input type="radio" name="media" required
 	     id="input:{{ resource.key }}" 
-	     value="{{ resource.key }}" >
+	     value="{{ resource.key }}"
+	     {% if loop.first %}
+	     checked
+	     {% endif %}
+	     >
       <label for="input:{{ resource.key }}">{{resource.str()}}</label>
       {% endfor %}
     </div>
@@ -21,7 +25,11 @@
       {% for resource in playbackProviders %}
       <input type="radio" name="speaker" required
 	     id="input:{{ resource.key }}"
-	     value="{{ resource.key }}" >
+	     value="{{ resource.key }}"
+	     {% if loop.first %}
+	     checked
+	     {% endif %}
+	     >
       <label for="input:{{ resource.key }}">{{resource.str()}}</label>
       </label>
       {% endfor %}
