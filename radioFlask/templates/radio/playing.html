@@ -5,11 +5,13 @@
 {% endblock %}
 
 {% block content %}
-  <div>
+
+  <divn>
     <h2>Playing {{ program }}</h2>
   <ul>
   {% for segment in segments %}
     <li>{{ segment.title }}</li>
   {% endfor %}
   </ul>
+  </div>
 {% endblock %}

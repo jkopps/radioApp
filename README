@@ -1,0 +1,16 @@
+
+### Initial setup:
+
+## If venv not installed
+$ apt install python3-venv
+
+$ cd <radioControlApp>
+$ python3 -m venv venv
+$ . venv/bin/activate
+
+## Install other dependencies
+(venv)$ pip install soco
+
+## To run app in flask development server
+(venv)$ . init.dev.sh
+(venv)$ flask run

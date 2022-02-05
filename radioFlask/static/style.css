@@ -1,0 +1,34 @@
+body {
+    margin: 0;
+}
+
+nav {
+    overflow: hidden;
+    background: darkgray;
+}
+
+nav ul {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+nav li {
+    float: left;
+}
+
+nav a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+nav a:hover:not(.active) {
+    background-color: black;
+}
+
+nav .active {
+    background-color: red;
+}

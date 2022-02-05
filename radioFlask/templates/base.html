@@ -1,15 +1,21 @@
 <!doctype html>
 <title>{% block title %}{% endblock %} - Radio</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<nav>
+<div>
   <h1>Radio App</h1>
+</div>
+
+<nav>
   <ul>
+    <li><a href="{{ url_for('radio.radio') }}">Control</a></li>
+    <li><a href="{{ url_for('radio.playing') }}">Playing</a></li>
     {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
+    <li><span>{{ g.user['username'] }}</span></li>
     {% else %}
     {% endif %}
   </ul>
 </nav>
+
 <section class="content">
   <header>
     {% block header %}{% endblock %}
