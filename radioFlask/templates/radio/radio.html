@@ -22,17 +22,11 @@
 
     <p>Audio Device:</p>
     <div>
-      {% for resource in playbackProviders %}
-      <input type="radio" name="speaker" required
-	     id="input:{{ resource.key }}"
-	     value="{{ resource.key }}"
-	     {% if loop.first %}
-	     checked
-	     {% endif %}
-	     >
-      <label for="input:{{ resource.key }}">{{resource.str()}}</label>
-      </label>
-      {% endfor %}
+      <select type="radio" name="speaker">
+	{% for resource in playbackProviders %}
+	<option value="{{ resource.key }}">{{resource.str()}}</option>
+	{% endfor %}
+      </select>
     </div>
     
     <div>

@@ -32,3 +32,8 @@ nav a:hover:not(.active) {
 nav .active {
     background-color: red;
 }
+
+input {
+    box-sizing: border-box;
+    margin: 8px 2px;
+}
