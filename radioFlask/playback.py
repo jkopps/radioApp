@@ -1,3 +1,4 @@
+import base64
 import string
 from .util import Provider
 
@@ -30,10 +31,24 @@ class SonosSpeaker(Player):
         for seg in segments:
             # add_uri_to_queue doesn't accept an alternate title argument, though sonos doesn't seem to make use of this anyway
             # spkr.add_uri_to_queue(seg.uri)
-            res = [DidlResource(uri=seg.uri, protocol_info="x-rincon-playlist:*:*:*")]
-            item = DidlObject(resources=res, title=seg.title, parent_id="", item_id="")
-            self.handle.add_to_queue(item, position=0, as_next=False)
-            print('Queued story "%s"' % seg.title)
+            uri = seg.uri
+            if not seg.uri.startswith('http'):
+                try:
+                    uri = str(base64.urlsafe_b64decode(seg.uri), 'utf-8')
+                    print("Alternative URI: %s (type %s" % (uri, type(uri)))
+                except:
+                    pass
+            if not uri.startswith('http'):
+                print("Could not decode URI %s" % seg.uri)
+                continue
+
+            try:
+                res = [DidlResource(uri=uri, protocol_info="x-rincon-playlist:*:*:*")]
+                item = DidlObject(resources=res, title=seg.title, parent_id="", item_id="")
+                self.handle.add_to_queue(item, position=0, as_next=False)
+            except:
+                print('Failed to queue story "%s" @ %s' % (seg.title, seg.uri))
+                continue
 
         if play:
             self.handle.play_from_queue(pos)
